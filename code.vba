@@ -64,6 +64,7 @@ Function DrawMove(selectedCell)
         Case 2: selectedCell.value = "O"
     End Select
 End Function
+
 Function ChangePlayer()
     Select Case player
         Case 1: player = 2

@@ -101,7 +101,7 @@ Function CheckWin() As Boolean
             If Cells(i, j).value = playerString Then
                 sum = sum + 1
             End If
-        Next j:
+        Next j
         If sum = columnsQty Then
             CheckWin = True: RestoreGame playerString, CheckWin
         End If

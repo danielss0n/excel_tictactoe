@@ -1,10 +1,12 @@
 Public columnsQty As Integer
 Public player As Integer
 Public xPlayerScore, oPlayerScore As Integer
+
 Sub Initialize()
     columnsQty = 3: player = 1: CreateTable
     xPlayerScore = 0: oPlayerScore = 0
 End Sub
+
 Private Sub Worksheet_SelectionChange(ByVal target As Range)
     'get the cell that the player selected:
     Dim selectedCell As Range: Set selectedCell = target
@@ -21,6 +23,7 @@ Private Sub Worksheet_SelectionChange(ByVal target As Range)
         CheckWin
     End If
 End Sub
+
 Function CreateTable()
     Dim i, j As Integer
     Dim cellSize As Integer: cellSize = 5
@@ -31,6 +34,7 @@ Function CreateTable()
         Rows(i).RowHeight = cellSize * 6.666
     Next: FormatTable: FormatMenu
 End Function
+
 Function RestoreTable()
     Application.ScreenUpdating = False
     Dim i, j As Integer
@@ -41,52 +45,7 @@ Function RestoreTable()
             Cells(i, j).value = ""
     Next: Next: Application.ScreenUpdating = True
 End Function
-Function FormatTable()
-    Dim i, j As Integer
-    For i = 1 To columnsQty
-        For j = 1 To columnsQty
-            Cells(i, j).Interior.ColorIndex = 16
-            Cells(i, j).Font.ColorIndex = 2
-            Cells(i, j).Borders.LineStyle = xlContinuous
-            Cells(i, j).Borders.Weight = xlMedium
-            Cells(i, j).Borders.ColorIndex = 1
-            Cells(i, j).HorizontalAlignment = xlCenter
-            Cells(i, j).VerticalAlignment = xlCenter
-            Cells(i, j).Font.Size = 20
-    Next: Next
-End Function
-Function FormatMenu()
-    Dim i, j, k As Integer: i = columnsQty + 1
-    'codes:
-    'i, i = player x text
-    'i, i + 1 = player o text
-    'i + 1, i = x score var
-    'i + 1, i + 1 = o score var
-    Cells(i, i).value = "Player X Score:"
-    Cells(i + 1, i).value = xPlayerScore
-    Cells(i, i + 1).value = "Player O Score:"
-    Cells(i + 1, i + 1).value = oPlayerScore
-    Cells(i, i).Columns.AutoFit
-    Cells(i, i + 1).Columns.AutoFit
-    For j = i To i + 1
-        For k = i To i + 1
-            Cells(j, k).Interior.ColorIndex = 16
-            Cells(j, k).Interior.ColorIndex = 16
-            Cells(j, k).Font.ColorIndex = 2
-            Cells(j, k).Borders.Weight = xlMedium
-            Cells(j, k).Borders.ColorIndex = 1
-            Cells(j, k).HorizontalAlignment = xlCenter
-            Cells(j, k).VerticalAlignment = xlCenter
-            Cells(j, k).Font.Bold = True
-        Next: Next
-    If xPlayerScore > oPlayerScore Then
-        Cells(i + 1, i).Font.ColorIndex = 4
-        Cells(i + 1, i + 1).Font.ColorIndex = 3
-    ElseIf xPlayerScore < oPlayerScore Then
-        Cells(i + 1, i).Font.ColorIndex = 3
-        Cells(i + 1, i + 1).Font.ColorIndex = 4
-    End If
-End Function
+
 Function RestoreGame(playerString, CheckWin)
     If CheckWin = True Then
         Select Case playerString
@@ -98,6 +57,7 @@ Function RestoreGame(playerString, CheckWin)
     Else: MsgBox ("Draw!"): End If
 RestoreTable: CreateTable
 End Function
+
 Function DrawMove(selectedCell)
     Select Case player
         Case 1: selectedCell.value = "X"
@@ -110,6 +70,7 @@ Function ChangePlayer()
         Case 2: player = 1
     End Select
 End Function
+
 Function CheckMove(column, row, value, target) As Boolean
     If target.Cells.Count > 1 Then
         MsgBox "Do not select more than one cell"
@@ -123,6 +84,7 @@ Function CheckMove(column, row, value, target) As Boolean
     '---------end of conditions---------
     Else: CheckMove = True: End If
 End Function
+
 Function CheckWin() As Boolean
     Dim playerString As String
     Select Case player
@@ -186,5 +148,53 @@ Function CheckWin() As Boolean
     'draw if all tiles filled
     If drawSum = columnsQty * columnsQty Then
         CheckWin = False: RestoreGame playerString, CheckWin
+    End If
+End Function
+
+Function FormatTable()
+    Dim i, j As Integer
+    For i = 1 To columnsQty
+        For j = 1 To columnsQty
+            Cells(i, j).Interior.ColorIndex = 16
+            Cells(i, j).Font.ColorIndex = 2
+            Cells(i, j).Borders.LineStyle = xlContinuous
+            Cells(i, j).Borders.Weight = xlMedium
+            Cells(i, j).Borders.ColorIndex = 1
+            Cells(i, j).HorizontalAlignment = xlCenter
+            Cells(i, j).VerticalAlignment = xlCenter
+            Cells(i, j).Font.Size = 20
+    Next: Next
+End Function
+
+Function FormatMenu()
+    Dim i, j, k As Integer: i = columnsQty + 1
+    'codes:
+    'i, i = player x text
+    'i, i + 1 = player o text
+    'i + 1, i = x score var
+    'i + 1, i + 1 = o score var
+    Cells(i, i).value = "Player X Score:"
+    Cells(i + 1, i).value = xPlayerScore
+    Cells(i, i + 1).value = "Player O Score:"
+    Cells(i + 1, i + 1).value = oPlayerScore
+    Cells(i, i).Columns.AutoFit
+    Cells(i, i + 1).Columns.AutoFit
+    For j = i To i + 1
+        For k = i To i + 1
+            Cells(j, k).Interior.ColorIndex = 16
+            Cells(j, k).Interior.ColorIndex = 16
+            Cells(j, k).Font.ColorIndex = 2
+            Cells(j, k).Borders.Weight = xlMedium
+            Cells(j, k).Borders.ColorIndex = 1
+            Cells(j, k).HorizontalAlignment = xlCenter
+            Cells(j, k).VerticalAlignment = xlCenter
+            Cells(j, k).Font.Bold = True
+        Next: Next
+    If xPlayerScore > oPlayerScore Then
+        Cells(i + 1, i).Font.ColorIndex = 4
+        Cells(i + 1, i + 1).Font.ColorIndex = 3
+    ElseIf xPlayerScore < oPlayerScore Then
+        Cells(i + 1, i).Font.ColorIndex = 3
+        Cells(i + 1, i + 1).Font.ColorIndex = 4
     End If
 End Function
